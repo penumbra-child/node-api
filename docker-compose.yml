@@ -1,0 +1,41 @@
+#dockerfile 
+#mysql 
+#red
+#volumen 
+#env 
+services:
+  api:
+    build: .
+    container_name: node_api
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+    environment:
+      PORT: 3000
+      DB_HOST: mysql
+      DB_USER: root
+      DB_PASSWORD: rootpass
+      DB_NAME: db_usuarios
+    networks:
+      - app-network
+
+  mysql:
+    image: mysql:8.0
+    container_name: mysql_db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass
+      MYSQL_DATABASE: db_usuarios
+    ports:
+      - "3310:3306"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    networks:
+      - app-network
+
+volumes:
+  mysql_data:
+
+networks:
+  app-network:
